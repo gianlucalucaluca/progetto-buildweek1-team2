@@ -80,9 +80,11 @@ const QUESTIONS = [
 
 /* Costanti del quiz */
 const TOTAL_QUESTIONS = QUESTIONS.length;
-const PASS_THRESHOLD = 60;     // percentuale minima per "Promosso"
-const FEEDBACK_DELAY = 1500;   // ms di attesa dopo risposta prima di avanzare
-const TIMER_DURATION = 20;     // secondi per ogni domanda
+const PASS_THRESHOLD = 60; // percentuale minima per "Promosso"
+const FEEDBACK_DELAY = 1500; // ms di attesa dopo risposta prima di avanzare
+const TIMER_DURATION = 20; // secondi per ogni domanda
+const MAIN_APP = document.querySelector("#app"); // prende il main con id app
+MAIN_APP.classList.add("welcome"); // aggiunta classe .welcome al main
 
 /* Stato globale */
 let currentScreen = "welcome"; // "welcome" | "quiz" | "results"
@@ -100,3 +102,84 @@ let timerId = null;
    - handleTimeUp() per il tempo scaduto
    - advance() per andare alla domanda successiva o ai risultati
 */
+
+// FUNZIONE RENDER CHE VARIA IN BASE A currentScreen
+
+window.addEventListener("load", () => {
+  render();
+});
+
+function render() {
+  MAIN_APP.textContent = ""; //svuota il main, in base al current screen viene riempito dalle 3 funzioni "welcome" | "quiz" | "results"
+
+  if (currentScreen === "welcome") {
+    renderWelcome();
+  } else if (currentScreen === "quiz") {
+    renderQuiz();
+  } else if (currentScreen === "results") {
+    renderResults();
+  }
+}
+
+function renderWelcome() {
+  const section = document.createElement("section");
+  section.classList.add("welcome-text");
+
+  const h1 = document.createElement("h1");
+  h1.classList.add("welcome-title");
+  h1.textContent = "Benvenuto al tuo ";
+
+  const span = document.createElement("span");
+  span.textContent = "esame";
+  span.classList.add("welcome-accent");
+  h1.appendChild(span);
+
+  const p = document.createElement("p");
+  p.classList.add("welcome-intro");
+  p.textContent = `Una serie di ${TOTAL_QUESTIONS} domande sul mondo dell'informatica e del web. Per ogni domanda hai ${TIMER_DURATION} secondi di tempo.`;
+
+  const ul = document.createElement("ul");
+
+  const rulesText = [
+    "Ogni domanda è a tempo e può ricevere una sola risposta.",
+    "Una volta cliccata una risposta, la domanda è chiusa.",
+    "Il quiz dura circa 3 minuti.",
+  ];
+
+  rulesText.forEach((e) => {
+    const li = document.createElement("li");
+    li.textContent = e;
+    li.classList.add("welcome-list");
+    ul.appendChild(li);
+  });
+
+  const button = document.createElement("button");
+  button.textContent = "Inizia il test ";
+  button.classList.add("start-btn");
+  
+  button.addEventListener("click", () => {
+    
+  })
+
+  section.appendChild(h1);
+  section.appendChild(p);
+  section.appendChild(ul);
+  section.appendChild(button);
+
+  MAIN_APP.append(section);
+}
+// 1.quando clicco sul bottone inizia il test - dentro funzione renderWelcome
+// 2. riassegnare la variabile currentscreen = quiz
+// 3. deve chiamare render (generale)
+// 4.dobbiamo andare a fare la function declaration di renderquiz
+// 5. albero del dom di renderQuiz con creazione di tutti gli elementi
+// 6.creare foreach su array questions
+// 7.creare un p dove viene scritto Domanda[i] di questions.length
+// 8. creare uno span  per il timer testo da costante TIMER_DURATION questo va attaccato alla section quiz
+// 9. creare un h2 per la QUESTIONS[i].question e l h2 attaccato alla section quiz
+// 10. chiudere il primo for each
+// 11. creare un div 
+// 12. creare un nuovo array  con nome costante totalAnswers [QUESTIONS.correct_answer,...incorrect_answers]
+// 13.fare un foreach per l'array questions per stamparlo nel dom
+// 14.creaiamo un button per ogni risposta 
+// 15. inserire testo di ogni risposta nei button con text content  

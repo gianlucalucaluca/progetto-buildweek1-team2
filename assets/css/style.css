@@ -3,36 +3,34 @@
   margin: 0;
   padding: 0;
 }
+html {
+  font-size: min(22px, calc(100vw / 70), calc(100vh / 40));
+}
 
 body {
   font-family: Arial, Helvetica, sans-serif;
-  background: #1b1535 url("assets/bg.jpg") center / cover no-repeat fixed;
-  color: #1b2845;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 24px;
+  background: #1b1535 url("../img/bg.jpg") center / cover no-repeat fixed;
+  color: #ffffff;
+  min-height: 100vh; /*almeno alto quanto lo schermo 100% altezza*/
+  /* display: flex;
+  flex-direction: column;  
+  align-items: center;*/
+  padding: 1.5rem;
 }
 
 .brand {
-  width: 100%;
-  max-width: 720px;
-  margin-bottom: 24px;
-  text-align: left;
+  max-width: 1100px;
+  margin: 0 auto 1.5rem; /*margin a lato in automatico per centrarlo, 1,5rem sotto*/
+  /*text-align: left;*/
 }
 
 .brand-logo {
-  height: 36px;
+  height: 2.25rem;
 }
 
 #app {
-  background: #ffffff;
-  border-radius: 16px;
-  padding: 40px;
-  max-width: 720px;
-  width: 100%;
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);
+  max-width: 70%;
+  margin: 6vh auto 0;
 }
 
 /* Aggiungi qui le tue regole CSS per:
@@ -40,3 +38,117 @@ body {
    - .quiz (counter, timer, domanda, button risposta, classi correct/wrong)
    - .results (percentuale, barre orizzontali, verdetto promosso/bocciato, restart)
 */
+
+/*le tre schermate che hanno lo stesso stile che sono uguali per tutte*/
+.welcome,
+.quiz,
+.results {
+  border: 1.5px solid rgba(185, 150, 255, 0.32); /*colore e trasparenza*/
+  border-radius: 1.4rem; /*angoli arrotondati*/
+  background: linear-gradient(180deg, #1e1458, #100b3a);
+  box-shadow: 0 14px 44px rgba(0, 0, 0, 0.45); /*sfocatura*/
+}
+
+/*--------- WELCOME--------*/
+.welcome {
+  overflow: hidden;
+  font-size: 0;
+  background:
+    linear-gradient(
+      90deg,
+      #170f4a 38%,
+      rgba(23, 15, 74, 0.85) 52%,
+      rgba(23, 15, 74, 0) 82%
+    ),
+    /* sfumatura da sinistra a desta, foto, sfondo di base */
+    url("/assets/img/welcome-bg.jpg") right center / auto 100% no-repeat,
+    linear-gradient(180deg, #1e1458, #100b3a); /* bordo del riquadro */
+}
+
+/* section della pagina iniziale, contenitore testi 1a pagina*/
+.welcome-text {
+  display: inline-block;
+  vertical-align: top;
+  width: 52%;
+  padding: 3.2rem 3rem;
+  font-size: 1rem;
+}
+
+/* titolo h1 pagina iniziale*/
+.welcome-title {
+  margin-bottom: 1.5rem;
+  font-size: 2.9rem;
+  line-height: 1.1; /* altezza della riga */
+}
+
+/* parola esame , in viola nell'h1*/
+.welcome-accent {
+  background: linear-gradient(90deg, #8c4dff, #e03c95);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/*p sotto h1(una serie di 10 domande) */
+.welcome-intro {
+  margin-bottom: 0.75rem;
+  line-height: 1.5;
+}
+
+/* lista(ul) sotto p */
+.welcome-list {
+  margin-bottom: 2rem;
+  padding-left: 1.25rem;
+  color: #cfd5ea;
+  line-height: 1.6;
+}
+
+/*-------Bottoni(inizia e ricomincia)-----*/
+.start-btn,
+.restart-btn {
+  display: inline-block;
+  color: #ffffff;
+  border: none; /*bordo grigio bottoni*/
+  font-weight: bold;
+  font-family: inherit;
+  cursor: pointer; /*manina che passqa sopra*/
+  transition: opacity 0.2s;
+  border-radius: 2rem;
+}
+
+.start-btn:hover,
+.restart-btn:hover {
+  opacity: 0.88;
+}
+.start-btn {
+  padding: 1.1rem 2.5rem;
+  background: linear-gradient(90deg, #6a2fe0, #c42a86);
+  font-size: 1.1rem;
+  box-shadow: 0 8px 24px rgba(170, 50, 200, 0.35);
+}
+
+.start-btn::after {
+  content: "\2192";
+  display: inline-block;
+  margin-left: 0.6rem;
+}
+
+/* fine schermata welcome*/
+
+/*---------SCHERMO QUIZ--------*/
+
+/* section class quiz, la card con le domande*/
+.quiz {
+  padding: 2.2rem 2.5rem 2.5rem; /*sopra, ai lati e sotto*/
+}
+
+/*è la riga in alto dove c'è il contatore a sinistra e il timer a destra*/
+.quiz-top {
+  margin-bottom: 1.7rem;
+  font-size: 0; /*niente spazi tra gli inline-block*/
+}
+/*usate uno span per quiz-counter che è il testo della domanda tipo: Domanda 1 di 10
+  sempre span per quiz-timer-box che è il contenitore del timer*/
+.quiz-counter,
+.quiz-timer-box {
+}
