@@ -4,6 +4,10 @@
   padding: 0;
 }
 html {
+  /*Tutte le misure sono in rem  min() sceglie il valore piu piccolo tra tre:
+   22px: il massimo, così sugli schermi enormi non diventa gigante
+   100vw / 70: la larghezza dello schermo divisa 70 
+   100vh / 40: l'altezza dello schermo divisa 40*/
   font-size: min(22px, calc(100vw / 70), calc(100vh / 40));
 }
 
@@ -19,7 +23,7 @@ body {
 }
 
 .brand {
-  max-width: 66rem;
+  max-width: 55rem;
   margin: 0 auto 1rem; /*margin a lato in automatico per centrarlo, 1,5rem sotto*/
   /*text-align: left;*/
 }
@@ -29,7 +33,7 @@ body {
 }
 
 #app {
-  max-width: 66rem;
+  max-width: 55rem;
   margin: 2rem auto 0;
 }
 
@@ -46,7 +50,7 @@ body {
   border: 1.5px solid rgba(185, 150, 255, 0.32); /*colore e trasparenza*/
   border-radius: 1.4rem; /*angoli arrotondati*/
   background: linear-gradient(180deg, #1e1458, #100b3a);
-  box-shadow: 0 14px 44px rgba(0, 0, 0, 0.45); /*sfocatura*/
+  box-shadow: 0 0.8rem 2.7rem rgba(0, 0, 0, 0.45); /*sfocatura*/
 }
 
 /*--------- WELCOME--------*/
@@ -70,14 +74,14 @@ body {
   display: inline-block;
   vertical-align: top;
   width: 52%;
-  padding: 3.2rem 3rem;
+  padding: 3rem 3rem;
   font-size: 1rem;
 }
 
 /* titolo h1 pagina iniziale*/
 .welcome-title {
-  margin-bottom: 1.5rem;
-  font-size: 2.9rem;
+  margin-bottom: 1.25rem;
+  font-size: 2.8rem;
   line-height: 1.1; /* altezza della riga */
 }
 
@@ -87,6 +91,7 @@ body {
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
+ line-height: 2;
 }
 
 /*p sotto h1(una serie di 10 domande) */
@@ -97,10 +102,12 @@ body {
 
 /* lista(ul) sotto p */
 .welcome-list {
-  margin-bottom: 2rem;
-  padding-left: 1.25rem;
+  margin-bottom: 0.5rem;
+  
+  padding-left: 0.5rem;
   color: #cfd5ea;
-  line-height: 1.6;
+  font-size: 0.9rem;
+  line-height: 1.2;
 }
 
 /*-------Bottoni(inizia e ricomincia)-----*/
@@ -121,10 +128,11 @@ body {
   opacity: 0.88;
 }
 .start-btn {
-  padding: 1.1rem 2.5rem;
+  margin-top: 2rem;
+  padding: 1rem 2.4rem;
   background: linear-gradient(90deg, #6a2fe0, #c42a86);
   font-size: 1.1rem;
-  box-shadow: 0 8px 24px rgba(170, 50, 200, 0.35);
+  box-shadow: 0 0.5rem 1.5rem rgba(170, 50, 200, 0.35);
 }
 
 .start-btn::after {
@@ -139,16 +147,118 @@ body {
 
 /* section class quiz, la card con le domande*/
 .quiz {
-  padding: 2.2rem 2.5rem 2.5rem; /*sopra, ai lati e sotto*/
+  padding: 2rem 2.5rem 2.2rem; /*sopra, ai lati e sotto*/
 }
 
 /*è la riga in alto dove c'è il contatore a sinistra e il timer a destra*/
 .quiz-top {
-  margin-bottom: 1.7rem;
+  margin-bottom: 1.5rem;
   font-size: 0; /*niente spazi tra gli inline-block*/
 }
 /*usate uno span per quiz-counter che è il testo della domanda tipo: Domanda 1 di 10
   sempre span per quiz-timer-box che è il contenitore del timer*/
 .quiz-counter,
 .quiz-timer-box {
+  display: inline-block;
+  vertical-align: middle;
+  width: 50%;
 }
+
+.quiz-counter{
+  color: #bdb6ea;
+  font-size: 1rem;
+}
+.quiz-timer-box{
+  text-align: right;
+}
+/*la pillola con i secondi tipo 20s*/
+.quiz-timer{
+  display: inline-block;
+  min-width: 4rem;
+  padding: 0.5rem 1rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.15);
+  font-size: 1.2rem;
+  font-weight: bold;
+  text-align: center;
+}
+/*sono due classi, urgent sono gli ultimi 5 secondi*/
+.quiz-timer.urgent{
+  background: #fde3e6;
+  color: #c0303d;
+}
+/*h2 sarebbe il testo della domanda*/
+.quiz-question{
+  margin-bottom: 1.5rem;
+  font-size: 1.7rem;
+  line-height: 1.3;
+
+}
+
+/*------Risposta----*/
+
+/*bottone risposta*/
+.answer{
+  display: inline-block;
+  vertical-align: top;
+  width: 100%;
+  margin-top: 0.7rem;
+  padding: 0.8rem 1.4rem;
+  border: 2px solid rgba(195, 175, 255, 0.55);
+  border-radius: 0.7rem;
+  background:  rgba(255, 255, 255, 0.04);
+  color: #ffffff;
+  font-size: 1.1rem;
+  text-align: left;
+  cursor: pointer;
+  /*transition: background 0.2s, border-color 0.2s;*/ 
+}
+
+
+.answer:last-child{
+  margin-bottom: 0;
+}
+
+.answers:not(.closed) .answers:hover{
+  /*tornare per vedere se funziona e correggere l'errore*/
+  background: rgba(255, 255, 255, 0.14);
+  border-color:  #c3afff;
+}
+
+/*cursore su domanda che torna normale .controllare se va tolto */
+.answer.closed .answer {
+  cursor: default;
+}
+/*button class aswer correct va messa nel javaScript*/
+.answer.correct{
+  background: #43995a;
+  border-color: #43995a;
+}
+/*stessa cosa del correct claase in java*/
+.answer.wrong{
+  background: #b0343c;
+  border-color: #b0343c;
+}
+/*--------SCHERMO RISULTATI*------/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

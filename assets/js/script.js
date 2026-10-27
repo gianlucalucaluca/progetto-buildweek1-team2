@@ -158,7 +158,8 @@ function renderWelcome() {
   button.classList.add("start-btn");
   
   button.addEventListener("click", () => {
-    
+    currentScreen = "quiz";
+    render();
   })
 
   section.appendChild(h1);
@@ -168,11 +169,51 @@ function renderWelcome() {
 
   MAIN_APP.append(section);
 }
-// 1.quando clicco sul bottone inizia il test - dentro funzione renderWelcome
-// 2. riassegnare la variabile currentscreen = quiz
-// 3. deve chiamare render (generale)
-// 4.dobbiamo andare a fare la function declaration di renderquiz
-// 5. albero del dom di renderQuiz con creazione di tutti gli elementi
+
+function renderQuiz(){
+  const section = document.createElement("section");
+  const p = document.createElement("p");
+  const span = document.createElement("span");
+  const h2 = document.createElement("h2");
+
+    QUESTIONS.forEach((question) =>{
+      currentQuestion++;
+      p.textContent = `Domanda ${currentQuestion} di ${QUESTIONS.length}`;
+      // p che si attacca alla section
+      // span.textContent = startTimer(TIMER_DURATION)
+    })
+
+    section.appendChild(h2);
+    section.appendChild(p);
+    section.appendChild(span);
+
+    MAIN_APP.append(section);
+
+    startTimer();
+}
+
+function startTimer () {
+  const timeLeft = TIMER_DURATION; 
+  const timerSpan = document.querySelector("#timer");
+  const intervalId = setInterval(() => {
+    timerSpan.textContent = timeLeft;
+    timeLeft--;
+
+    if (timeLeft <= 5){
+      span.classList.add("time-left");
+    }
+
+    if (timeLeft = 0) {
+      clearInterval(intervalId);
+      console.log("Tempo scaduto");
+      currentQuestion++;
+      renderQuiz();
+    }
+  }, 1000);
+}
+
+
+
 // 6.creare foreach su array questions
 // 7.creare un p dove viene scritto Domanda[i] di questions.length
 // 8. creare uno span  per il timer testo da costante TIMER_DURATION questo va attaccato alla section quiz
@@ -183,3 +224,4 @@ function renderWelcome() {
 // 13.fare un foreach per l'array questions per stamparlo nel dom
 // 14.creaiamo un button per ogni risposta 
 // 15. inserire testo di ogni risposta nei button con text content  
+
