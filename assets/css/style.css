@@ -19,18 +19,18 @@ body {
 }
 
 .brand {
-  max-width: 1100px;
-  margin: 0 auto 1.5rem; /*margin a lato in automatico per centrarlo, 1,5rem sotto*/
+  max-width: 66rem;
+  margin: 0 auto 1rem; /*margin a lato in automatico per centrarlo, 1,5rem sotto*/
   /*text-align: left;*/
 }
 
 .brand-logo {
-  height: 2.25rem;
+  height: 2rem;
 }
 
 #app {
-  max-width: 70%;
-  margin: 6vh auto 0;
+  max-width: 66rem;
+  margin: 2rem auto 0;
 }
 
 /* Aggiungi qui le tue regole CSS per:
