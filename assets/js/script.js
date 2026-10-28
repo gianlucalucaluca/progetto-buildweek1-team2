@@ -153,14 +153,16 @@ function renderWelcome() {
     ul.appendChild(li);
   });
 
+  // pulsante "Inizia il test"
   const button = document.createElement("button");
   button.textContent = "Inizia il test ";
   button.classList.add("start-btn");
-  
+
+  // al suo click, currentScreen diventa quiz e richiama la funzione render
   button.addEventListener("click", () => {
     currentScreen = "quiz";
     render();
-  })
+  });
 
   section.appendChild(h1);
   section.appendChild(p);
@@ -170,58 +172,149 @@ function renderWelcome() {
   MAIN_APP.append(section);
 }
 
-function renderQuiz(){
-  const section = document.createElement("section");
-  const p = document.createElement("p");
-  const span = document.createElement("span");
-  const h2 = document.createElement("h2");
+// creo un array vuoto usedQuestions
+const USED_QUESTIONS = [];
+// Apro la funzione renderQuiz
+function renderQuiz() {
+  MAIN_APP.textContent = "";
 
-    QUESTIONS.forEach((question) =>{
-      currentQuestion++;
-      p.textContent = `Domanda ${currentQuestion} di ${QUESTIONS.length}`;
-      // p che si attacca alla section
-      // span.textContent = startTimer(TIMER_DURATION)
-    })
+  // inizializzo una costante randomIndex con math.floor e math.random
+  let randomIndex = Math.floor(Math.random() * QUESTIONS.length);
+  if (USED_QUESTIONS.includes(QUESTIONS[randomIndex].question)) {
+    return renderQuiz();
+  }
 
-    section.appendChild(h2);
-    section.appendChild(p);
-    section.appendChild(span);
+  USED_QUESTIONS.push(QUESTIONS[randomIndex].question);
+  // -creo una section e ci do una classe quiz
+  const newSection = document.createElement("section");
+  newSection.classList.add("quiz");
+  // -creo un div
+  const newQuizDiv = document.createElement("div");
+  // -ci do la classe .quiz top
+  newQuizDiv.classList.add("quiz-top");
+  // -appendo il div alla section
+  newSection.appendChild(newQuizDiv);
+  // -creo uno span
+  const newSpan = document.createElement("span");
+  // -inserisco testo "domanda indicerandomico di questions.length"
+  newSpan.textContent = `Domanda ${USED_QUESTIONS.length} di ${QUESTIONS.length}`;
+  // -aggiungo classe quiz-counter
+  newSpan.classList.add("quiz-counter");
+  // -appendo lo span alla sectionquiz
+  newSection.appendChild(newSpan);
+  // -creo un altro span
+  const newTimerSpan = document.createElement("span");
+  // - devo mostrare il timer che va in live
+  newTimerSpan.textContent = `${TIMER_DURATION}`;
+  // -ci do una classe quiz-timer-box e ne .quiz-timer
+  newTimerSpan.classList.add("quiz-timer-box", "quiz-timer");
+  // dare id timer
+  newTimerSpan.setAttribute("id", "timer");
+  // -appendo il secondo span alla section .main
+  newSection.appendChild(newTimerSpan);
+  // creo un h2
+  const newQuiz = document.createElement("h2");
+  // h2 text content QUESTIONS[randomIndex].question
+  newQuiz.textContent = QUESTIONS[randomIndex].question;
+  // dare una classe .quiz-question
+  newQuiz.classList.add("quiz-question");
+  // appendo l'h2 alla section
+  newSection.appendChild(newQuiz);
+  // creo un div
+  const newAnswerDiv = document.createElement("div");
+  // appendo il div alla section
+  newSection.appendChild(newAnswerDiv);
+  // creo array totalanswer = [correct_answer,...incorrect_answer]
+  const totalAnswer = [
+    ...QUESTIONS[randomIndex].incorrect_answers,
+    QUESTIONS[randomIndex].correct_answer,
+  ];
+  // creo un for each per total answer
+  totalAnswer.forEach((answer) => {
+    // creo un button per ognuno
+    const buttonAnswer = document.createElement("button");
+    buttonAnswer.textContent = answer;
+    // ci do la classe .answer
+    buttonAnswer.classList.add("answer");
+    //addEventlistener per i bottoni delle risposte
+    buttonAnswer.addEventListener("click", () => {
+      // prendo tutti i bottoni del div newAnswerDiv con const allButtons usando querySelectorAll("button")
+      const allButtons = newAnswerDiv.querySelectorAll("button");
+      //forEach di allButtons e con btn.disabled = true disabilito i bottoni
+      allButtons.forEach((btn) => {
+        btn.disabled = true;
+      });
+      // if (buttonAnswer.textContent === QUESTIONS[randomIndex].correct_answer) se la risposta è esatta aumenta lo score e si assegna la classe .correct
+      if (buttonAnswer.textContent === QUESTIONS[randomIndex].correct_answer) {
+        score++;
+        buttonAnswer.classList.add("correct");
+      } // se è sbagliata si assegna la classe .wrong alla risposta cliccata e si assegna quella correct a quella effettivamente giusta cercandola con il forEach
+      else {
+        buttonAnswer.classList.add("wrong");
+        allButtons.forEach((buttonAnswer) => {
+          if (
+            buttonAnswer.textContent === QUESTIONS[randomIndex].correct_answer
+          ) {
+            buttonAnswer.classList.add("correct");
+          }
+        });
+      }
+      //setTimeout per passare alla domanda successiva dopo 1,5 secondi
+      setTimeout(() => {
+        // scala il currentQuestion++ per la prossima domanda
+        currentQuestion++;
+        // se currentQuestion.lenght è < di QUESTIONS.lenght richiamo la funzione renderQuiz() per far scorrere le ulteriori domande
+        if (currentQuestion < QUESTIONS.length) {
+          renderQuiz();
+        } //con else, ovvero se currentQuestion.lengh è > di QUESTIONS.lenght, cambio il currentScreen in results e richiamo la funzione render ()
+        else {
+          currentScreen = "results";
+          render();
+        }
+      }, 1500);
+    });
 
-    MAIN_APP.append(section);
-
-    startTimer();
+    //appendo i bottoni al div
+    newAnswerDiv.appendChild(buttonAnswer);
+  });
+  newSection.appendChild(newAnswerDiv);
+  MAIN_APP.append(newSection);
+  startTimer();
 }
 
-function startTimer () {
-  const timeLeft = TIMER_DURATION; 
+function startTimer() {
+  // pulire il timer precedente
+  clearInterval(timerId);
+
+  // mettere variabile tempo rimanente pari al tempo a disposizione
+  let timeLeft = TIMER_DURATION;
+
   const timerSpan = document.querySelector("#timer");
-  const intervalId = setInterval(() => {
+  console.log(timerSpan);
+
+  timerId = setInterval(() => {
     timerSpan.textContent = timeLeft;
     timeLeft--;
-
-    if (timeLeft <= 5){
-      span.classList.add("time-left");
+    
+    if (timeLeft <= 5) {
+      timerSpan.classList.add("quiz-timer.urgent");
     }
 
-    if (timeLeft = 0) {
-      clearInterval(intervalId);
-      console.log("Tempo scaduto");
+    if (timeLeft <= 0) {
+      clearInterval(timerId);
       currentQuestion++;
       renderQuiz();
     }
   }, 1000);
 }
 
-
-
 // 6.creare foreach su array questions
 // 7.creare un p dove viene scritto Domanda[i] di questions.length
 // 8. creare uno span  per il timer testo da costante TIMER_DURATION questo va attaccato alla section quiz
 // 9. creare un h2 per la QUESTIONS[i].question e l h2 attaccato alla section quiz
 // 10. chiudere il primo for each
-// 11. creare un div 
+// 11. creare un div
 // 12. creare un nuovo array  con nome costante totalAnswers [QUESTIONS.correct_answer,...incorrect_answers]
 // 13.fare un foreach per l'array questions per stamparlo nel dom
-// 14.creaiamo un button per ogni risposta 
-// 15. inserire testo di ogni risposta nei button con text content  
-
+// 14.creaiamo un button per ogni risposta
+// 15. inserire testo di ogni risposta nei button con text content
