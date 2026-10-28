@@ -184,6 +184,12 @@ function renderQuiz() {
     return renderQuiz();
   }
 
+  // do {
+  //   randomIndex = Math.floor(Math.random() * QUESTIONS.length);
+  //   currentScreen = "quiz";
+  //   renderQuiz();
+  // } while (USED_QUESTIONS.includes(QUESTIONS[randomIndex].question));
+
   USED_QUESTIONS.push(QUESTIONS[randomIndex].question);
   // -creo una section e ci do una classe quiz
   const newSection = document.createElement("section");
@@ -243,6 +249,7 @@ function renderQuiz() {
       //forEach di allButtons e con btn.disabled = true disabilito i bottoni
       allButtons.forEach((btn) => {
         btn.disabled = true;
+        btn.style.cursor = "default";
       });
       // if (buttonAnswer.textContent === QUESTIONS[randomIndex].correct_answer) se la risposta è esatta aumenta lo score e si assegna la classe .correct
       if (buttonAnswer.textContent === QUESTIONS[randomIndex].correct_answer) {
@@ -259,7 +266,7 @@ function renderQuiz() {
           }
         });
       }
-      //setTimeout per passare alla domanda successiva dopo 1,5 secondi
+      //setTimeout per passare alla domanda successiva dopo    1,5 secondi
       setTimeout(() => {
         // scala il currentQuestion++ per la prossima domanda
         currentQuestion++;
@@ -290,12 +297,11 @@ function startTimer() {
   let timeLeft = TIMER_DURATION;
 
   const timerSpan = document.querySelector("#timer");
-  console.log(timerSpan);
 
   timerId = setInterval(() => {
     timerSpan.textContent = timeLeft;
     timeLeft--;
-    
+
     if (timeLeft <= 5) {
       timerSpan.classList.add("quiz-timer.urgent");
     }
@@ -308,13 +314,38 @@ function startTimer() {
   }, 1000);
 }
 
-// 6.creare foreach su array questions
-// 7.creare un p dove viene scritto Domanda[i] di questions.length
-// 8. creare uno span  per il timer testo da costante TIMER_DURATION questo va attaccato alla section quiz
-// 9. creare un h2 per la QUESTIONS[i].question e l h2 attaccato alla section quiz
-// 10. chiudere il primo for each
-// 11. creare un div
-// 12. creare un nuovo array  con nome costante totalAnswers [QUESTIONS.correct_answer,...incorrect_answers]
-// 13.fare un foreach per l'array questions per stamparlo nel dom
-// 14.creaiamo un button per ogni risposta
-// 15. inserire testo di ogni risposta nei button con text content
+function renderResults() {
+  // section di results
+  const newSection = document.createElement("section");
+  // div del results-heading
+  const newDivResults = document.createElement("div");
+  // div del result-icon
+  const newDivIcon = document.createElement("div");
+  // div del results-text
+  const newDivText = document.createElement("div");
+  // h2 del results-title
+  const newTitleResult = document.createElement("h2");
+
+
+  // condizione if per h2
+  if (score >= 6) {
+    newTitleResult.textContent = "Complimenti! Hai superato l'esame!"
+  }else{
+    newTitleResult.textContent = "Peccato! Non hai superato l'esame!"
+  }
+
+  // appendo l'h2 dentro results-text
+  newDivText.appendChild(newTitleResult);
+  // appendo i div dentro results-heading
+  newDivResults.appendChild(newDivIcon);
+  newDivResults.appendChild(newDivText);
+  // appendo i results-heading dentro section
+  newSection.appendChild(newDivResults);
+
+  MAIN_APP.append(newSection);
+}
+
+//mettere l'icona nel  newDivIcon
+// h2 da stampare in base allo score con le varie condizioni if
+// nel newDivResults stampare la percentuale e il decimale (per la percentuale si fa score * 100 / 10, stampare quindi la const  percentuale con simbolo %)
+

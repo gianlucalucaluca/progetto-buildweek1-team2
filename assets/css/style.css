@@ -106,7 +106,6 @@ body {
 /* lista(ul) sotto p */
 .welcome-list {
   margin-bottom: 0.5rem;
-
   padding-left: 0.5rem;
   color: #cfd5ea;
   font-size: 0.9rem;
@@ -171,33 +170,30 @@ body {
 .quiz-counter{
   display: inline-block;
   vertical-align: middle;
-  width: 60%;
-}
-
-.quiz-counter {
+  width: calc(100%-6.3rem);
   color: #bdb6ea;
   font-size: 1rem;
 }
 
 .quiz-timer-box {
   display: inline-block;
-  text-align: right;
-  width: 20%;
-  
-
+  vertical-align: middle;
+  width: 5.5rem;
+  margin-left: 0.5rem;
+  margin-bottom: 1.5rem;
+  text-align: center;
 }
 
 /*la pillola con i secondi tipo 20s*/
 /*span anche per quiz-timer*/
 .quiz-timer {
-  display: inline-block;
   min-width: 4rem;
   padding: 0.5rem 1rem;
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.15);
   font-size: 1.2rem;
   font-weight: bold;
-  text-align: center;
+  float: right;
 }
 
 /*sono due classi, urgent sono gli ultimi 5 secondi*/
@@ -256,4 +252,81 @@ body {
   border-color: #b0343c;
 }
 
-/*--------SCHERMO RISULTATI*------/
+/*--------SCHERMO RISULTATI------*/
+/* section class result - card terza pagina  */
+.results{
+  padding: 2rem 3rem 2rem;
+  text-align: center;
+}
+
+/* contenitore icona + titoli */
+
+.result-header{
+  margin-bottom: 1rem;
+  font-size: 0;/*niente spazio tra gli inline block*/
+}
+
+
+/* contenitore dell'icona del cerchio che vale per la spunta e per la x dentro il cerchio */
+.result-icon{
+display: inline-block;
+vertical-align: middle;
+width: 4rem;
+height: 4rem;
+margin-right: 2rem;
+border: 0.3rem solid;
+border-radius: 50%;
+font-size: 3rem;
+font-weight: bold;
+line-height: 3,4rem;
+}
+
+/*Titolo: complimenti e peccato*/
+/*Sottotitolo: "hai superato l'esame" e "non hai superato l'esame"*/
+/*Entrambi sono div*/
+.results-text{
+  display: inline-block;
+  vertical-align: middle;
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.results-title{
+  font-size: 1rem;
+}
+
+/* se il risultato è positivo l'icona il titolo ed il div hanno classe .passed */
+.results.passed .result-icon,
+.results.passed .risults-title {
+  border-color: rgb(73, 245, 50);
+  color:  rgb(73, 245, 50);
+}
+
+/* se il risultato è negativo l'icona il titolo ed il div hanno classe .failed */
+.results.failed .result-icon,
+.results.failed .risults-title {
+  border-color: red;
+  color:  red;
+}
+
+/* se il risultato è positivo .passed applicare pseudoclasse a icon */
+.results.passed .result-icon::before{
+  content:"\2713";
+}
+
+/* se il risultato è negativo .failed applicare pseudoclasse a icon */
+.results.failed .result-icon::before{
+  content: "\2715";
+}
+
+/*sfocatura corretto*/
+.results.passed .result-icon{
+  background: rgba(40, 150, 100, 0.18);
+}
+
+/*sfocatura sbagliato*/ 
+.results.failed .result-icon{
+  background: rgba(200, 50, 70, 0.18);
+}
+
+/*----------Box Percentuale e risposte--------*/
