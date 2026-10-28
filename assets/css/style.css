@@ -94,7 +94,6 @@ body {
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
-  line-height: 2;
 }
 
 /*p sotto h1(una serie di 10 domande) */
@@ -111,6 +110,7 @@ body {
   font-size: 0.9rem;
   line-height: 1.2;
 }
+
 
 /*-------Bottoni(inizia e ricomincia)-----*/
 .start-btn,
@@ -148,10 +148,8 @@ body {
   margin-left: 0.6rem;
 }
 
-/* fine schermata welcome*/
 
 /*---------SCHERMO QUIZ--------*/
-
 /* section class quiz, la card con le domande*/
 .quiz {
   padding: 2rem 2.5rem 2.2rem;
@@ -170,7 +168,7 @@ body {
 .quiz-counter{
   display: inline-block;
   vertical-align: middle;
-  width: calc(100%-6.3rem);
+  width: calc(100% - 6.3rem);
   color: #bdb6ea;
   font-size: 1rem;
 }
@@ -198,7 +196,8 @@ body {
 
 /*sono due classi, urgent sono gli ultimi 5 secondi*/
 /*span anche per questi 2 SPAN*/
-.quiz-timer.urgent {
+/* .quiz-timer */
+.urgent {
   background: #fde3e6;
   color: #c0303d;
 }
@@ -211,8 +210,8 @@ body {
 
 }
 
-/*------Risposta----*/
 
+/*------Risposta----*/
 /*tag button class= answer, un button per ogni risposta, tutto dentro il div class=answerS!*/
 .answer {
   display: inline-block;
@@ -227,7 +226,7 @@ body {
   font-size: 1.1rem;
   text-align: left;
   cursor: pointer;
-  transition: background 0.2s,
+  transition: background 0.2s;
 }
 
 /*margine da togliere sotto opzione risposta*/
@@ -252,20 +251,20 @@ body {
   border-color: #b0343c;
 }
 
+
 /*--------SCHERMO RISULTATI------*/
 /* section class result - card terza pagina  */
 .results{
   padding: 2rem 3rem 2rem;
   text-align: center;
+  font-size: 1rem;
 }
 
 /* contenitore icona + titoli */
-
 .result-header{
   margin-bottom: 1rem;
   font-size: 0;/*niente spazio tra gli inline block*/
 }
-
 
 /* contenitore dell'icona del cerchio che vale per la spunta e per la x dentro il cerchio */
 .result-icon{
@@ -278,7 +277,7 @@ border: 0.3rem solid;
 border-radius: 50%;
 font-size: 3rem;
 font-weight: bold;
-line-height: 3,4rem;
+line-height: 3.4rem;
 }
 
 /*Titolo: complimenti e peccato*/
@@ -287,46 +286,198 @@ line-height: 3,4rem;
 .results-text{
   display: inline-block;
   vertical-align: middle;
+  text-align: left;
   font-size: 2rem;
   font-weight: bold;
 }
 
+.result-title{
+  font-size: 2rem;
+}
+
 .results-title{
-  font-size: 1rem;
+  color: #ffffff;
+  font-size: 2rem;
+  line-height: 1.3;
 }
 
 /* se il risultato è positivo l'icona il titolo ed il div hanno classe .passed */
-.results.passed .result-icon,
-.results.passed .risults-title {
+.passed { 
   border-color: rgb(73, 245, 50);
   color:  rgb(73, 245, 50);
 }
 
 /* se il risultato è negativo l'icona il titolo ed il div hanno classe .failed */
-.results.failed .result-icon,
-.results.failed .risults-title {
+.failed {
   border-color: red;
-  color:  red;
+  color:  red; 
 }
 
 /* se il risultato è positivo .passed applicare pseudoclasse a icon */
-.results.passed .result-icon::before{
+.result-icon.passed::before{
   content:"\2713";
 }
 
 /* se il risultato è negativo .failed applicare pseudoclasse a icon */
-.results.failed .result-icon::before{
+.result-icon.failed::before{
   content: "\2715";
 }
 
 /*sfocatura corretto*/
-.results.passed .result-icon{
+.result-icon.passed{
   background: rgba(40, 150, 100, 0.18);
 }
 
 /*sfocatura sbagliato*/ 
-.results.failed .result-icon{
+.result-icon.failed{
   background: rgba(200, 50, 70, 0.18);
 }
 
+
 /*----------Box Percentuale e risposte--------*/
+/* box delle statistiche totali */
+.stats{
+  max-width: 55rem;
+  margin: 0 auto; /*da aggiustare*/ 
+  padding: 1rem 0; 
+  border: 1.5px solid rgba(160, 110, 255, 0.75);
+  border-radius: 1rem;
+  background: #120c40;
+  box-shadow: 0 0 2rem rgba(150, 80, 255, 0.22);
+  font-size:0; /* non ci sono spazi tra gli inline-block*/ 
+}
+
+/* div class stat da attaccare a stats con due colonne da 50 e 50 */
+.stat {
+  display: inline-block;
+  vertical-align: middle;
+  width: 50%;
+  font-size: 0;
+}
+
+/*div class= stat stat-right*/
+.stat-right {
+  border-left: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+/* div con classe circle figlio di stat */
+.circle {
+  display: inline-block;
+  vertical-align: middle;
+  width: 7rem;
+  height: 7rem;
+  margin-left: 1.5rem;
+  margin-right: 1rem;
+  border-radius: 50%;
+  font-size: 0;
+}
+
+/* div figlio di circle con classe circle-in */
+.circle-in{
+  display: inline-block;
+  vertical-align: top;
+  width: 5rem;
+  height: 5rem;
+  margin: 1rem;
+  border-radius: 50%;
+  background: #120c40;
+  font-size: 1.3rem;
+  font-weight: bold;
+  line-height: 5rem;/* uguale a height*/
+}
+
+/* div con classe stat-info da attaccare a stat */
+.stat-info{
+  display: inline-block;
+  vertical-align: middle;
+  font-size: 1rem;
+  text-align: left;
+}
+
+/* div class heading da attaccare a stat info */
+.stat-heading{
+margin-bottom: 0.4rem;
+color: #d3cdf2;
+font-size: 1.2rem;
+}
+
+/* div con classe stat-value figlio di stat-info */
+.stat-value{
+  font-size: 1.7rem;
+  font-weight: bold;
+}
+
+/*contenitore del primo state-info con soglia minima figlio di stat info */
+.stat-note{
+  margin-top: 0.2rem;
+  color: #aaa3d6;
+  font-size: 1rem;
+}
+
+/* contenitore risposte corrette e sbagliate figlio del secondo div stat-info */
+.legend{
+  margin-top: 0.2rem;
+  color: #ffffff;
+  font-size: 1rem;
+  line-height: 1.5rem;
+}
+
+/*contenitore risposte corrette e sbagliate figlio del secondo div stat-info */ 
+.legend b{
+  margin-left: 0.4rem;
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+/* span per il pallino dei contenitori div-legend */
+.dot{
+  display: inline-block;
+  vertical-align: middle;
+  width: 0.5rem;
+  height: 0.5rem;
+  margin-left: 0.5rem;
+  border-radius: 50%;
+}
+
+/* colore dello span pallino per contenitore div legend sbagliate */
+.dot.bad{
+  background: #c93b45;
+}
+
+/*colore dello span pallino per contenitore div legend corrette */
+.dot.good{
+  background: #43a864;
+}
+
+
+/*--------Bottone Ricomincia---------*/ 
+/*restart principale*/
+.restart-btn{
+  margin-top: 1.5rem;
+  padding: 1rem 2.4rem;
+  background: linear-gradient(180deg, #46ad6b, #2f9158);
+  font-size: 1.2rem;
+  box-shadow: 0 0.4rem 1.3rem rgba(60, 190, 110, 0.35);
+  text-transform: uppercase;
+}
+
+/*icon restart*/
+.restart-btn::before{
+  content: '\21BB';
+  display: inline-block;
+  margin-left: 0.6rem;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+

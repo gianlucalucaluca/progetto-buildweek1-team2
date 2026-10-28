@@ -84,7 +84,6 @@ const PASS_THRESHOLD = 60; // percentuale minima per "Promosso"
 const FEEDBACK_DELAY = 1500; // ms di attesa dopo risposta prima di avanzare
 const TIMER_DURATION = 20; // secondi per ogni domanda
 const MAIN_APP = document.querySelector("#app"); // prende il main con id app
-MAIN_APP.classList.add("welcome"); // aggiunta classe .welcome al main
 
 /* Stato globale */
 let currentScreen = "welcome"; // "welcome" | "quiz" | "results"
@@ -138,6 +137,8 @@ function renderWelcome() {
   p.classList.add("welcome-intro");
   p.textContent = `Una serie di ${TOTAL_QUESTIONS} domande sul mondo dell'informatica e del web. Per ogni domanda hai ${TIMER_DURATION} secondi di tempo.`;
 
+  MAIN_APP.classList.add("welcome"); // aggiunta classe .welcome al main
+
   const ul = document.createElement("ul");
 
   const rulesText = [
@@ -161,6 +162,7 @@ function renderWelcome() {
   // al suo click, currentScreen diventa quiz e richiama la funzione render
   button.addEventListener("click", () => {
     currentScreen = "quiz";
+    MAIN_APP.classList.remove("welcome");
     render();
   });
 
@@ -251,6 +253,8 @@ function renderQuiz() {
         btn.disabled = true;
         btn.style.cursor = "default";
       });
+      // ferma il timer una volta cliccata la risposta
+      clearInterval(timerId);
       // if (buttonAnswer.textContent === QUESTIONS[randomIndex].correct_answer) se la risposta è esatta aumenta lo score e si assegna la classe .correct
       if (buttonAnswer.textContent === QUESTIONS[randomIndex].correct_answer) {
         score++;
@@ -302,11 +306,11 @@ function startTimer() {
     timerSpan.textContent = timeLeft;
     timeLeft--;
 
-    if (timeLeft <= 5) {
-      timerSpan.classList.add("quiz-timer.urgent");
+    if (timeLeft < 5) {
+      timerSpan.classList.add("urgent"); // dovrebbe essere solo urgent come classe per fare cambiare il colore a 5 secondi
     }
 
-    if (timeLeft <= 0) {
+    if (timeLeft === 0) {
       clearInterval(timerId);
       currentQuestion++;
       renderQuiz();
@@ -315,32 +319,124 @@ function startTimer() {
 }
 
 function renderResults() {
+  MAIN_APP.textContent = "";
+
   // section di results
   const newSection = document.createElement("section");
+  // classe per la section generale
+  newSection.classList.add("results");
   // div del results-heading
   const newDivResults = document.createElement("div");
+  // classe per div result-header
+  newDivResults.classList.add("result-header");
   // div del result-icon
   const newDivIcon = document.createElement("div");
+  // classe per div result-icon
+  newDivIcon.classList.add("result-icon");
   // div del results-text
   const newDivText = document.createElement("div");
+  // classe per il div results-text
+  newDivText.classList.add("results-text");
   // h2 del results-title
   const newTitleResult = document.createElement("h2");
-
+  newTitleResult.classList.add("result-title");
+  // span per titolo COMPLIMENTI/PECCATO
+  const newSpanTitleResult = document.createElement("span");
 
   // condizione if per h2
   if (score >= 6) {
-    newTitleResult.textContent = "Complimenti! Hai superato l'esame!"
-  }else{
-    newTitleResult.textContent = "Peccato! Non hai superato l'esame!"
+    newTitleResult.textContent = " Hai superato l'esame!";
+    newSpanTitleResult.textContent = "Complimenti!";
+    newSpanTitleResult.classList.add("passed");
+    newTitleResult.classList.add("result-title");
+  } else {
+    newTitleResult.textContent = " Non hai superato l'esame!";
+    newSpanTitleResult.textContent = "Peccato!";
+    newSpanTitleResult.classList.add("failed");
+    newTitleResult.classList.add("result-title");
   }
 
+  // div di tutta la parte statistiche
+  const statsDiv = document.createElement("div");
+  statsDiv.classList.add("stats");
+  // div del CONTENUTO delle statistiche sia a sinistra che a destra
+  const statDiv = document.createElement("div");
+  statDiv.classList.add("stat");
+  // div per il cerchio della percentuale
+  const circleDiv = document.createElement("div");
+  circleDiv.classList.add("circle");
+  // div che contiente la percentuale dentro il cerchio
+  const circleInDiv = document.createElement("div");
+  circleInDiv.classList.add("circle-in");
+  // div che contiente tutte le info delle statistiche in %
+  const statInfoDiv = document.createElement("div");
+  statInfoDiv.classList.add("stat-info");
+  // div che contiene la scritta "percentuale"
+  const statHeadingDiv = document.createElement("div");
+  statHeadingDiv.classList.add("stat-heading");
+  // div che contiente il value della percentuale
+  const statValueDiv = document.createElement("div");
+  statValueDiv.classList.add("stat-value");
+  // div che contiente la soglia della percentuale
+  const statNoteDiv = document.createElement("div");
+  statNoteDiv.classList.add("stat-note");
+  // div a destra dove contiente le statistiche in decimale
+  const statRightDiv = document.createElement("div");
+  statRightDiv.classList.add("stat", "stat-right");
+  // div per il cerchio delle statistiche
+  const circleRightDiv = document.createElement("div");
+  circleRightDiv.classList.add("circle");
+  // div per la scritta delle statistiche dentro il cerchio
+  const circleRightInDiv = document.createElement("div");
+  circleRightInDiv.classList.add("circle-in");
+  // div per le info delle varie statistiche
+  const statRightInfoDiv = document.createElement("div");
+  statRightInfoDiv.classList.add("stat-info");
+  // div che contiente la sritta "risposte"
+  const statRightHeadingDiv = document.createElement("div");
+  statRightHeadingDiv.classList.add("stat-heading");
+  // div che contiente - risposte corrette
+  const legendCorrectDiv = document.createElement("div");
+  legendCorrectDiv.classList.add("legend");
+  // div che contiente - risposte sbagliate
+  const legendWrongDiv = document.createElement("div");
+  legendWrongDiv.classList.add("legend");
+  //bottone per restart
+  const button = document.createElement("button");
+  button.textContent = " RICOMINCIA";
+  button.classList.add("restart-btn");
+
+  //PARTE HEADING - SECTION RESULTS
   // appendo l'h2 dentro results-text
   newDivText.appendChild(newTitleResult);
+  newDivText.insertBefore(newSpanTitleResult, newTitleResult);
   // appendo i div dentro results-heading
   newDivResults.appendChild(newDivIcon);
   newDivResults.appendChild(newDivText);
   // appendo i results-heading dentro section
   newSection.appendChild(newDivResults);
+
+  // PARTE PERCENTUALE - STATISTICHE
+  // appendo le due parti di destra e sinistra nel div tutta la parte statistiche
+  statsDiv.appendChild(statDiv);
+  // parte sinistra
+  statDiv.appendChild(circleDiv);
+  circleDiv.appendChild(circleInDiv);
+  statDiv.appendChild(statInfoDiv);
+  statInfoDiv.appendChild(statHeadingDiv);
+  statInfoDiv.appendChild(statValueDiv);
+  statInfoDiv.appendChild(statNoteDiv);
+  // parte destra
+  statsDiv.appendChild(statRightDiv);
+  statRightDiv.appendChild(circleRightDiv);
+  circleRightDiv.appendChild(circleRightInDiv);
+  statRightDiv.appendChild(statRightInfoDiv);
+  statRightInfoDiv.appendChild(statRightHeadingDiv);
+  statRightInfoDiv.appendChild(legendCorrectDiv);
+  statRightInfoDiv.appendChild(legendWrongDiv);
+  // bottone ricomincia
+  newSection.appendChild(statsDiv);
+  newSection.appendChild(button);
 
   MAIN_APP.append(newSection);
 }
@@ -348,4 +444,3 @@ function renderResults() {
 //mettere l'icona nel  newDivIcon
 // h2 da stampare in base allo score con le varie condizioni if
 // nel newDivResults stampare la percentuale e il decimale (per la percentuale si fa score * 100 / 10, stampare quindi la const  percentuale con simbolo %)
-
