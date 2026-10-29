@@ -483,3 +483,93 @@ font-size: 1.2rem;
   display: inline-block;
   margin-left: 0.6rem;
 }
+
+/*------ Coriandoli-------*/
+/*contenitore coriandoli da attaccare a newDivResults*/
+.coriandoli-box{
+  position: relative;
+}
+/* classi da aggiungere a result-icon e result-text tag  elementi da attaccare a coriandoli box */
+.result-icon,
+.result-text {
+  position: relative;
+  z-index: 1;
+}
+
+.coriandoli {
+  position: absolute;
+  width: 0.8rem;
+  height: 0.3rem;
+  border-radius: 0.2rem;
+}
+
+/* span a cui dare classe  */
+.c1{
+  top: -1rem;
+  left: 34%;
+  background: #e03c95;
+  transform: rotate(55deg);
+}
+
+.c2{
+  top: 0rem;
+  left: 43%;
+  background: #e03c3c;
+  transform: rotate(-25deg);
+}
+
+.c3{
+  top: -3rem;
+  left: 56%;
+  background: #e03ce0;
+  transform: rotate(88deg);
+}
+
+.c4{
+  top: -2rem;
+  left: 27%;
+  background: #683ce0;
+  transform: rotate(-75deg);
+}
+
+.c5{
+  top: 1rem;
+  left: 67%;
+  background: #3cd5e0;
+  transform: rotate(-39deg);
+}
+
+.c6{
+  top: 2rem;
+  left: 46%;
+  background: #4fe03c;
+  transform: rotate(62deg);
+}
+
+.c7{
+  top: 3rem;
+  left: 58%;
+  background: #c7e03c;
+  transform: rotate(73deg);
+}
+
+.c8{
+  top: -4rem;
+  left: 78%;
+  background: #e09e3c;
+  transform: rotate(-85deg);
+}
+
+.c9{
+  top: 4rem;
+  left: 84%;
+  background: #3c5ae0;
+  transform: rotate(68deg);
+}
+
+.c0{
+  top: -5rem;
+  left: 7%;
+  background: #3ce07b;
+  transform: rotate(-48deg);
+}

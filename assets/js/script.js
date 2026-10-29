@@ -15,36 +15,31 @@
 */
 const QUESTIONS = [
   {
-    question: "Cosa significa l'acronimo CPU?",
-    correct_answer: "Central Processing Unit",
-    incorrect_answers: [
-      "Central Process Unit",
-      "Computer Personal Unit",
-      "Central Processor Unit",
-    ],
+    question: "L'argomento in querySelector...",
+    correct_answer: "Dovrebbe essere sempre un selettore CSS valido",
+    incorrect_answers: ["Può essere omesso", 
+      "Può essere un oggetto con più proprietà", 
+      "Deve essere un id, una classe o un nome di tag"],
   },
   {
-    question:
-      "In Java, quale keyword si usa per impedire che una variabile venga modificata?",
-    correct_answer: "final",
-    incorrect_answers: ["static", "private", "public"],
+    question: "In HTML, onclick e onfocus sono:",
+    correct_answer: "Attributi di Evento",
+    incorrect_answers: ["Attributi di stile", "Elementi HTML", "Nessuno dei precedenti"],
   },
   {
-    question: "Il logo di Snapchat è una campana.",
+    question: "Il getElementsByClassName restituirà la prima occorrenza di tutti gli elementi con una classe specificata.",
     correct_answer: "Falso",
     incorrect_answers: ["Vero"],
   },
   {
-    question:
-      "I puntatori sono stati introdotti in C++ e non c'erano nel linguaggio C originale.",
+    question: "Il tag <meta> non può essere definito nel tag <head>.",
     correct_answer: "Falso",
     incorrect_answers: ["Vero"],
   },
   {
-    question:
-      "Qual è il formato immagine più usato per i loghi nel database di Wikimedia?",
-    correct_answer: ".svg",
-    incorrect_answers: [".png", ".jpeg", ".gif"],
+    question: "Qual è la sintassi corretta dei commenti?",
+    correct_answer: "// Comment",
+    incorrect_answers: [">>Comment<<", "<<Comment>>", "/ Comment"],
   },
   {
     question: "Cosa significa l'acronimo CSS?",
@@ -56,25 +51,24 @@ const QUESTIONS = [
     ],
   },
   {
-    question: "Qual è il nome in codice del sistema operativo Android 7.0?",
-    correct_answer: "Nougat",
-    incorrect_answers: ["Ice Cream Sandwich", "Jelly Bean", "Marshmallow"],
+    question: "Come si scrive uno statement IF che controlli se i è uguale a 5 in JavaScript?",
+    correct_answer: "if(i===5) { }",
+    incorrect_answers: [" if(i=5) { }", "if i==5 then", "if i=5 then"],
   },
   {
-    question: "Qual era il limite originale di caratteri di un Tweet?",
-    correct_answer: "140",
-    incorrect_answers: ["120", "160", "100"],
+    question: "È possibile modificare la dimensione del testo per i tag di intestazione (h1...)?",
+    correct_answer: "Si",
+    incorrect_answers: ["No, è impostato dal browser"],
   },
   {
-    question: "Linux è stato creato come alternativa a Windows XP.",
-    correct_answer: "Falso",
-    incorrect_answers: ["Vero"],
+    question: "I commenti HTML iniziano con <!-- e finiscono con -->",
+    correct_answer: "Vero",
+    incorrect_answers: ["Falso"],
   },
   {
-    question:
-      "Quale linguaggio di programmazione condivide il nome con un'isola dell'Indonesia?",
-    correct_answer: "Java",
-    incorrect_answers: ["Python", "C", "Jakarta"],
+    question: "Quale tag possiamo usare per creare un elenco numerico?",
+    correct_answer: "<ol>",
+    incorrect_answers: ["<list>", "<dl>", "<ul>"],
   },
 ];
 
@@ -406,6 +400,22 @@ function renderResults() {
     newSpanTitleResult.classList.add("passed");
     newTitleResult.classList.add("result-title");
     newDivIcon.classList.add("passed");
+    //div di coriandoli-box
+    const coriandoliBox = document.createElement("div");
+    coriandoliBox.classList.add("coriandoli-box");
+    //do classe 'coriandoli-box' a result-header
+    //newDivResults.classList.add('coriandoli-box');
+    //do classe coriandoli box  a newDivIcon
+    //newDivIcon.classList.add('coriandoli-box');
+    //do classe coriandoli box a newDivText
+    // newDivText.classList.add('coriandoli-box');
+    //for per creare i 10 span
+    for (let i = 0; i < 10; i++) {
+      const span = document.createElement("span");
+      span.classList.add("coriandoli", `c${i}`);
+      coriandoliBox.appendChild(span);
+      newDivResults.prepend(coriandoliBox);
+    }
   } else {
     newTitleResult.textContent = " Non hai superato l'esame!";
     newSpanTitleResult.textContent = "Peccato!";
@@ -554,7 +564,7 @@ function renderResults() {
 function showCorrectMessage(QUESTIONS) {
   //seleziono i bottoni con classe answer
   const buttons = MAIN_APP.querySelectorAll("button");
-// disabilita i bottoni
+  // disabilita i bottoni
   buttons.forEach((btn) => {
     btn.disabled = true;
   });
