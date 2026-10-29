@@ -120,7 +120,6 @@ function render() {
   }
 }
 
-
 /*----Pagina Benvenuto----*/
 function renderWelcome() {
   const section = document.createElement("section");
@@ -176,8 +175,6 @@ function renderWelcome() {
   MAIN_APP.append(section);
 }
 
-
-
 /*----Pagina Quiz----*/
 
 // inizializzo una costante randomIndex con math.floor e math.random
@@ -190,14 +187,13 @@ const USED_QUESTIONS = [];
 function renderQuiz() {
   MAIN_APP.textContent = "";
 
-
   // if (USED_QUESTIONS.includes(QUESTIONS[randomIndex].question)) {
   //   return renderQuiz();
   // }
 
-do {
-  randomIndex = Math.floor(Math.random() * QUESTIONS.length);
-} while (USED_QUESTIONS.includes(QUESTIONS[randomIndex].question));
+  do {
+    randomIndex = Math.floor(Math.random() * QUESTIONS.length);
+  } while (USED_QUESTIONS.includes(QUESTIONS[randomIndex].question));
 
   USED_QUESTIONS.push(QUESTIONS[randomIndex].question);
 
@@ -264,7 +260,7 @@ do {
 
   // for per randomizzare l'ordine delle risposte, con il math random randomizzo gli indici
   for (let i = totalAnswer.length - 1; i > 0; i--) {
-    const randomAnswerIndex = Math.floor(Math.random() * (i+1));
+    const randomAnswerIndex = Math.floor(Math.random() * (i + 1));
     const temp = totalAnswer[i];
     totalAnswer[i] = totalAnswer[randomAnswerIndex];
     totalAnswer[randomAnswerIndex] = temp;
@@ -272,7 +268,6 @@ do {
 
   // creo un for each per total answer
   totalAnswer.forEach((answer) => {
-
     // creo un button per ognuno
     const buttonAnswer = document.createElement("button");
     buttonAnswer.textContent = answer;
@@ -282,7 +277,6 @@ do {
 
     //addEventlistener per i bottoni delle risposte
     buttonAnswer.addEventListener("click", () => {
-
       // prendo tutti i bottoni del div newAnswerDiv con const allButtons usando querySelectorAll("button")
       const allButtons = newAnswerDiv.querySelectorAll("button");
 
@@ -312,7 +306,6 @@ do {
 
       //setTimeout per passare alla domanda successiva dopo    1,5 secondi
       setTimeout(() => {
-
         // scala il currentQuestion++ per la prossima domanda
         currentQuestion++;
 
@@ -345,23 +338,23 @@ function startTimer() {
   const timerSpan = document.querySelector("#timer");
 
   timerId = setInterval(() => {
-    timerSpan.textContent =  `${timeLeft}s`;
+    timerSpan.textContent = `${timeLeft}s`;
 
     if (timeLeft === 0) {
       clearInterval(timerId);
-      showCorrectMessage(QUESTIONS);//disabilitare le risposte quando scade il tempo
-      
-      // currentQuestion++;
+      showCorrectMessage(QUESTIONS); //disabilitare le risposte quando scade il tempo
 
-      setTimeout(()=>{
-        if(currentQuestion < QUESTIONS.length){
-        renderQuiz();
+      currentQuestion++;
+
+      setTimeout(() => {
+        if (currentQuestion < QUESTIONS.length) {
+          renderQuiz();
         } else {
           currentScreen = "results";
           render();
         }
       }, FEEDBACK_DELAY);
-      return; 
+      return;
     }
 
     if (timeLeft <= 5) {
@@ -370,7 +363,6 @@ function startTimer() {
     timeLeft--;
   }, 1000);
 }
-
 
 /*----Pagina Finale----*/
 function renderResults() {
@@ -435,12 +427,11 @@ function renderResults() {
   const circleDiv = document.createElement("div");
   circleDiv.classList.add("circle");
   circleDiv.style.setProperty("--perc", `${percentuage}%`);
-  
+
   // div che contiente la percentuale dentro il cerchio
   const circleInDiv = document.createElement("div");
   circleInDiv.classList.add("circle-in");
   circleInDiv.textContent = `${percentuage} %`;
-
 
   // div che contiente tutte le info delle statistiche in %
   const statInfoDiv = document.createElement("div");
@@ -558,13 +549,19 @@ function renderResults() {
   MAIN_APP.append(newSection);
 }
 
-// funzione per far apparire la risposta esatta allo scadere del timer 
+// funzione per far apparire la risposta esatta allo scadere del timer
 //apro una funzione che riceve un array come parametro
-function showCorrectMessage(QUESTIONS){
-//seleziono i bottoni con classe answer
-const buttons = MAIN_APP.querySelectorAll("button");
-//mettere un forEach
-buttons.forEach((btn) =>{
-  if(btn.textContent===QUESTIONS[randomIndex].correct_answer){
-  btn.classList.add('correct')
-  }})}
+function showCorrectMessage(QUESTIONS) {
+  //seleziono i bottoni con classe answer
+  const buttons = MAIN_APP.querySelectorAll("button");
+// disabilita i bottoni
+  buttons.forEach((btn) => {
+    btn.disabled = true;
+  });
+  // cerca la risposta esatta dove applicargli la classe correct allo scadere del tempo
+  buttons.forEach((btn) => {
+    if (btn.textContent === QUESTIONS[randomIndex].correct_answer) {
+      btn.classList.add("correct");
+    }
+  });
+}

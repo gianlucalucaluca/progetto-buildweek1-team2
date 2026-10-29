@@ -153,7 +153,7 @@ body {
 /*---------SCHERMO QUIZ--------*/
 /* section class quiz, la card con le domande*/
 .quiz {
-  padding: 2.8rem 2.5rem 2.2rem;
+  padding: 1.8rem 2.5rem 2.2rem;
   /*sopra, ai lati e sotto*/
 }
 
@@ -180,6 +180,7 @@ body {
   width: 5.5rem;
   margin-left: 0.5rem;
   text-align: center;
+
 }
 
 /*la pillola con i secondi tipo 20s*/
