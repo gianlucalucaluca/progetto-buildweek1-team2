@@ -120,6 +120,8 @@ function render() {
   }
 }
 
+
+/*----Pagina Benvenuto----*/
 function renderWelcome() {
   const section = document.createElement("section");
   section.classList.add("welcome-text");
@@ -174,87 +176,124 @@ function renderWelcome() {
   MAIN_APP.append(section);
 }
 
+
+
+/*----Pagina Quiz----*/
+
+// inizializzo una costante randomIndex con math.floor e math.random
+let randomIndex = Math.floor(Math.random() * QUESTIONS.length);
+
 // creo un array vuoto usedQuestions
 const USED_QUESTIONS = [];
+
 // Apro la funzione renderQuiz
 function renderQuiz() {
   MAIN_APP.textContent = "";
 
-  // inizializzo una costante randomIndex con math.floor e math.random
-  let randomIndex = Math.floor(Math.random() * QUESTIONS.length);
-  if (USED_QUESTIONS.includes(QUESTIONS[randomIndex].question)) {
-    return renderQuiz();
-  }
 
-  // do {
-  //   randomIndex = Math.floor(Math.random() * QUESTIONS.length);
-  //   currentScreen = "quiz";
-  //   renderQuiz();
-  // } while (USED_QUESTIONS.includes(QUESTIONS[randomIndex].question));
+  // if (USED_QUESTIONS.includes(QUESTIONS[randomIndex].question)) {
+  //   return renderQuiz();
+  // }
+
+do {
+  randomIndex = Math.floor(Math.random() * QUESTIONS.length);
+} while (USED_QUESTIONS.includes(QUESTIONS[randomIndex].question));
 
   USED_QUESTIONS.push(QUESTIONS[randomIndex].question);
+
   // -creo una section e ci do una classe quiz
   const newSection = document.createElement("section");
   newSection.classList.add("quiz");
+
   // -creo un div
   const newQuizDiv = document.createElement("div");
+
   // -ci do la classe .quiz top
   newQuizDiv.classList.add("quiz-top");
+
   // -appendo il div alla section
   newSection.appendChild(newQuizDiv);
+
   // -creo uno span
   const newSpan = document.createElement("span");
+
   // -inserisco testo "domanda indicerandomico di questions.length"
   newSpan.textContent = `Domanda ${USED_QUESTIONS.length} di ${QUESTIONS.length}`;
+
   // -aggiungo classe quiz-counter
   newSpan.classList.add("quiz-counter");
+
   // -appendo lo span alla sectionquiz
-  newSection.appendChild(newSpan);
+  newQuizDiv.appendChild(newSpan);
+
   // -creo un altro span
   const newTimerSpan = document.createElement("span");
+
   // - devo mostrare il timer che va in live
-  newTimerSpan.textContent = `${TIMER_DURATION}`;
+  newTimerSpan.textContent = `${TIMER_DURATION}s`;
+
   // -ci do una classe quiz-timer-box e ne .quiz-timer
   newTimerSpan.classList.add("quiz-timer-box", "quiz-timer");
+
   // dare id timer
   newTimerSpan.setAttribute("id", "timer");
+
   // -appendo il secondo span alla section .main
-  newSection.appendChild(newTimerSpan);
+  newQuizDiv.appendChild(newTimerSpan);
+
   // creo un h2
   const newQuiz = document.createElement("h2");
+
   // h2 text content QUESTIONS[randomIndex].question
   newQuiz.textContent = QUESTIONS[randomIndex].question;
+
   // dare una classe .quiz-question
   newQuiz.classList.add("quiz-question");
+
   // appendo l'h2 alla section
   newSection.appendChild(newQuiz);
+
   // creo un div
   const newAnswerDiv = document.createElement("div");
-  // appendo il div alla section
-  newSection.appendChild(newAnswerDiv);
+
   // creo array totalanswer = [correct_answer,...incorrect_answer]
   const totalAnswer = [
     ...QUESTIONS[randomIndex].incorrect_answers,
     QUESTIONS[randomIndex].correct_answer,
   ];
+
+  // for per randomizzare l'ordine delle risposte, con il math random randomizzo gli indici
+  for (let i = totalAnswer.length - 1; i > 0; i--) {
+    const randomAnswerIndex = Math.floor(Math.random() * (i+1));
+    const temp = totalAnswer[i];
+    totalAnswer[i] = totalAnswer[randomAnswerIndex];
+    totalAnswer[randomAnswerIndex] = temp;
+  }
+
   // creo un for each per total answer
   totalAnswer.forEach((answer) => {
+
     // creo un button per ognuno
     const buttonAnswer = document.createElement("button");
     buttonAnswer.textContent = answer;
+
     // ci do la classe .answer
     buttonAnswer.classList.add("answer");
+
     //addEventlistener per i bottoni delle risposte
     buttonAnswer.addEventListener("click", () => {
+
       // prendo tutti i bottoni del div newAnswerDiv con const allButtons usando querySelectorAll("button")
       const allButtons = newAnswerDiv.querySelectorAll("button");
+
       //forEach di allButtons e con btn.disabled = true disabilito i bottoni
       allButtons.forEach((btn) => {
         btn.disabled = true;
-        btn.style.cursor = "default";
       });
+
       // ferma il timer una volta cliccata la risposta
       clearInterval(timerId);
+
       // if (buttonAnswer.textContent === QUESTIONS[randomIndex].correct_answer) se la risposta è esatta aumenta lo score e si assegna la classe .correct
       if (buttonAnswer.textContent === QUESTIONS[randomIndex].correct_answer) {
         score++;
@@ -270,10 +309,13 @@ function renderQuiz() {
           }
         });
       }
+
       //setTimeout per passare alla domanda successiva dopo    1,5 secondi
       setTimeout(() => {
+
         // scala il currentQuestion++ per la prossima domanda
         currentQuestion++;
+
         // se currentQuestion.lenght è < di QUESTIONS.lenght richiamo la funzione renderQuiz() per far scorrere le ulteriori domande
         if (currentQuestion < QUESTIONS.length) {
           renderQuiz();
@@ -282,7 +324,7 @@ function renderQuiz() {
           currentScreen = "results";
           render();
         }
-      }, 1500);
+      }, FEEDBACK_DELAY);
     });
 
     //appendo i bottoni al div
@@ -298,48 +340,70 @@ function startTimer() {
   clearInterval(timerId);
 
   // mettere variabile tempo rimanente pari al tempo a disposizione
-  let timeLeft = TIMER_DURATION;
+  let timeLeft = TIMER_DURATION - 1;
 
   const timerSpan = document.querySelector("#timer");
 
   timerId = setInterval(() => {
-    timerSpan.textContent = timeLeft;
-    timeLeft--;
-
-    if (timeLeft < 5) {
-      timerSpan.classList.add("urgent"); // dovrebbe essere solo urgent come classe per fare cambiare il colore a 5 secondi
-    }
+    timerSpan.textContent =  `${timeLeft}s`;
 
     if (timeLeft === 0) {
       clearInterval(timerId);
-      currentQuestion++;
-      renderQuiz();
+      showCorrectMessage(QUESTIONS);//disabilitare le risposte quando scade il tempo
+      
+      // currentQuestion++;
+
+      setTimeout(()=>{
+        if(currentQuestion < QUESTIONS.length){
+        renderQuiz();
+        } else {
+          currentScreen = "results";
+          render();
+        }
+      }, FEEDBACK_DELAY);
+      return; 
     }
+
+    if (timeLeft <= 5) {
+      timerSpan.classList.add("urgent"); // dovrebbe essere solo urgent come classe per fare cambiare il colore a 5 secondi
+    }
+    timeLeft--;
   }, 1000);
 }
 
+
+/*----Pagina Finale----*/
 function renderResults() {
   MAIN_APP.textContent = "";
 
   // section di results
   const newSection = document.createElement("section");
+
   // classe per la section generale
   newSection.classList.add("results");
+
   // div del results-heading
   const newDivResults = document.createElement("div");
+
   // classe per div result-header
   newDivResults.classList.add("result-header");
+
   // div del result-icon
   const newDivIcon = document.createElement("div");
+
   // classe per div result-icon
   newDivIcon.classList.add("result-icon");
+
   // div del results-text
   const newDivText = document.createElement("div");
+
   // classe per il div results-text
   newDivText.classList.add("results-text");
+
   // h2 del results-title
   const newTitleResult = document.createElement("h2");
   newTitleResult.classList.add("result-title");
+
   // span per titolo COMPLIMENTI/PECCATO
   const newSpanTitleResult = document.createElement("span");
 
@@ -349,76 +413,121 @@ function renderResults() {
     newSpanTitleResult.textContent = "Complimenti!";
     newSpanTitleResult.classList.add("passed");
     newTitleResult.classList.add("result-title");
+    newDivIcon.classList.add("passed");
   } else {
     newTitleResult.textContent = " Non hai superato l'esame!";
     newSpanTitleResult.textContent = "Peccato!";
     newSpanTitleResult.classList.add("failed");
     newTitleResult.classList.add("result-title");
+    newDivIcon.classList.add("failed");
   }
 
   // div di tutta la parte statistiche
   const statsDiv = document.createElement("div");
   statsDiv.classList.add("stats");
+
   // div del CONTENUTO delle statistiche sia a sinistra che a destra
   const statDiv = document.createElement("div");
   statDiv.classList.add("stat");
+
   // div per il cerchio della percentuale
+  const percentuage = (score * 100) / QUESTIONS.length;
   const circleDiv = document.createElement("div");
   circleDiv.classList.add("circle");
+  circleDiv.style.setProperty("--perc", `${percentuage}%`);
+  
   // div che contiente la percentuale dentro il cerchio
   const circleInDiv = document.createElement("div");
   circleInDiv.classList.add("circle-in");
+  circleInDiv.textContent = `${percentuage} %`;
+
+
   // div che contiente tutte le info delle statistiche in %
   const statInfoDiv = document.createElement("div");
   statInfoDiv.classList.add("stat-info");
+
   // div che contiene la scritta "percentuale"
   const statHeadingDiv = document.createElement("div");
   statHeadingDiv.classList.add("stat-heading");
+  statHeadingDiv.textContent = "Percentuale";
+
   // div che contiente il value della percentuale
   const statValueDiv = document.createElement("div");
   statValueDiv.classList.add("stat-value");
+  statValueDiv.textContent = `${percentuage} %`;
+
   // div che contiente la soglia della percentuale
   const statNoteDiv = document.createElement("div");
   statNoteDiv.classList.add("stat-note");
+  statNoteDiv.textContent = `Soglia minima : 60 %`;
+
   // div a destra dove contiente le statistiche in decimale
   const statRightDiv = document.createElement("div");
   statRightDiv.classList.add("stat", "stat-right");
+
   // div per il cerchio delle statistiche
   const circleRightDiv = document.createElement("div");
   circleRightDiv.classList.add("circle");
+  circleRightDiv.style.setProperty("--perc", `${percentuage}%`);
+
   // div per la scritta delle statistiche dentro il cerchio
   const circleRightInDiv = document.createElement("div");
   circleRightInDiv.classList.add("circle-in");
+  circleRightInDiv.textContent = `${score}/${QUESTIONS.length}`;
+
   // div per le info delle varie statistiche
   const statRightInfoDiv = document.createElement("div");
   statRightInfoDiv.classList.add("stat-info");
+
   // div che contiente la sritta "risposte"
   const statRightHeadingDiv = document.createElement("div");
   statRightHeadingDiv.classList.add("stat-heading");
-  // div che contiente - risposte corrette
+  statRightHeadingDiv.textContent = "Risposte";
+
+  // div che contiente lo span testo e numero delle risposte corrette
   const legendCorrectDiv = document.createElement("div");
   legendCorrectDiv.classList.add("legend");
-  // div che contiente - risposte sbagliate
-  const legendWrongDiv = document.createElement("div");
-  legendWrongDiv.classList.add("legend");
+  const spanDotGood = document.createElement("span");
+  spanDotGood.classList.add("dot", "good");
+  const textCorrect = document.createElement("span");
+  textCorrect.textContent = "Corrette";
+  const bGood = document.createElement("b");
+  bGood.textContent = `${score}`;
+
+  // div che contiente lo span testo e numero delle risposte sbagliate
+  const legendBadDiv = document.createElement("div");
+  legendBadDiv.classList.add("legend");
+  const spanDotBad = document.createElement("span");
+  spanDotBad.classList.add("dot", "bad");
+  const textBad = document.createElement("span");
+  textBad.textContent = "Sbagliate";
+  const bBad = document.createElement("b");
+  bBad.textContent = `${QUESTIONS.length - score}`;
+
   //bottone per restart
   const button = document.createElement("button");
   button.textContent = " RICOMINCIA";
   button.classList.add("restart-btn");
+  button.addEventListener("click", () => {
+    window.location.reload();
+  });
 
   //PARTE HEADING - SECTION RESULTS
   // appendo l'h2 dentro results-text
   newDivText.appendChild(newTitleResult);
   newDivText.insertBefore(newSpanTitleResult, newTitleResult);
+
   // appendo i div dentro results-heading
   newDivResults.appendChild(newDivIcon);
   newDivResults.appendChild(newDivText);
+
   // appendo i results-heading dentro section
   newSection.appendChild(newDivResults);
 
   // PARTE PERCENTUALE - STATISTICHE
   // appendo le due parti di destra e sinistra nel div tutta la parte statistiche
   statsDiv.appendChild(statDiv);
+
   // parte sinistra
   statDiv.appendChild(circleDiv);
   circleDiv.appendChild(circleInDiv);
@@ -426,6 +535,7 @@ function renderResults() {
   statInfoDiv.appendChild(statHeadingDiv);
   statInfoDiv.appendChild(statValueDiv);
   statInfoDiv.appendChild(statNoteDiv);
+
   // parte destra
   statsDiv.appendChild(statRightDiv);
   statRightDiv.appendChild(circleRightDiv);
@@ -433,7 +543,14 @@ function renderResults() {
   statRightDiv.appendChild(statRightInfoDiv);
   statRightInfoDiv.appendChild(statRightHeadingDiv);
   statRightInfoDiv.appendChild(legendCorrectDiv);
-  statRightInfoDiv.appendChild(legendWrongDiv);
+  legendCorrectDiv.appendChild(spanDotGood);
+  legendCorrectDiv.appendChild(textCorrect);
+  legendCorrectDiv.appendChild(bGood);
+  legendBadDiv.appendChild(spanDotBad);
+  legendBadDiv.appendChild(textBad);
+  legendBadDiv.appendChild(bBad);
+  statRightInfoDiv.appendChild(legendBadDiv);
+
   // bottone ricomincia
   newSection.appendChild(statsDiv);
   newSection.appendChild(button);
@@ -441,6 +558,13 @@ function renderResults() {
   MAIN_APP.append(newSection);
 }
 
-//mettere l'icona nel  newDivIcon
-// h2 da stampare in base allo score con le varie condizioni if
-// nel newDivResults stampare la percentuale e il decimale (per la percentuale si fa score * 100 / 10, stampare quindi la const  percentuale con simbolo %)
+// funzione per far apparire la risposta esatta allo scadere del timer 
+//apro una funzione che riceve un array come parametro
+function showCorrectMessage(QUESTIONS){
+//seleziono i bottoni con classe answer
+const buttons = MAIN_APP.querySelectorAll("button");
+//mettere un forEach
+buttons.forEach((btn) =>{
+  if(btn.textContent===QUESTIONS[randomIndex].correct_answer){
+  btn.classList.add('correct')
+  }})}
