@@ -13,21 +13,30 @@
    - correct_answer: la risposta corretta (string)
    - incorrect_answers: array di risposte sbagliate (string[])
 */
+
+// 20 domande, ma vengono estratte solo 10 randomiche
 const QUESTIONS = [
   {
     question: "L'argomento in querySelector...",
     correct_answer: "Dovrebbe essere sempre un selettore CSS valido",
-    incorrect_answers: ["Può essere omesso", 
-      "Può essere un oggetto con più proprietà", 
-      "Deve essere un id, una classe o un nome di tag"],
+    incorrect_answers: [
+      "Può essere omesso",
+      "Può essere un oggetto con più proprietà",
+      "Deve essere un id, una classe o un nome di tag",
+    ],
   },
   {
     question: "In HTML, onclick e onfocus sono:",
     correct_answer: "Attributi di Evento",
-    incorrect_answers: ["Attributi di stile", "Elementi HTML", "Nessuno dei precedenti"],
+    incorrect_answers: [
+      "Attributi di stile",
+      "Elementi HTML",
+      "Nessuno dei precedenti",
+    ],
   },
   {
-    question: "Il getElementsByClassName restituirà la prima occorrenza di tutti gli elementi con una classe specificata.",
+    question:
+      "Il getElementsByClassName restituirà la prima occorrenza di tutti gli elementi con una classe specificata.",
     correct_answer: "Falso",
     incorrect_answers: ["Vero"],
   },
@@ -51,12 +60,14 @@ const QUESTIONS = [
     ],
   },
   {
-    question: "Come si scrive uno statement IF che controlli se i è uguale a 5 in JavaScript?",
+    question:
+      "Come si scrive uno statement IF che controlli se i è uguale a 5 in JavaScript?",
     correct_answer: "if(i===5) { }",
     incorrect_answers: [" if(i=5) { }", "if i==5 then", "if i=5 then"],
   },
   {
-    question: "È possibile modificare la dimensione del testo per i tag di intestazione (h1...)?",
+    question:
+      "È possibile modificare la dimensione del testo per i tag di intestazione (h1...)?",
     correct_answer: "Si",
     incorrect_answers: ["No, è impostato dal browser"],
   },
@@ -70,10 +81,80 @@ const QUESTIONS = [
     correct_answer: "<ol>",
     incorrect_answers: ["<list>", "<dl>", "<ul>"],
   },
+  {
+    question:
+      "Quale metodo JavaScript permette di selezionare un elemento tramite il suo ID?",
+    correct_answer: "getElementById()",
+    incorrect_answers: [
+      "getElementsByTagName()",
+      "queryAllById()",
+      "selectById()",
+    ],
+  },
+  {
+    question:
+      "Quale proprietà JavaScript permette di modificare il contenuto testuale di un elemento HTML?",
+    correct_answer: "textContent",
+    incorrect_answers: ["innerStyle", "valueHTML", "textHTML"],
+  },
+  {
+    question:
+      "Quale metodo viene utilizzato per aggiungere un elemento figlio al DOM?",
+    correct_answer: "appendChild()",
+    incorrect_answers: ["addElement()", "insertHTML()", "createChild()"],
+  },
+  {
+    question:
+      "Quale evento JavaScript viene attivato quando l'utente clicca su un elemento?",
+    correct_answer: "click",
+    incorrect_answers: ["submit", "change", "mouseover"],
+  },
+  {
+    question:
+      "Quale parola chiave viene utilizzata per dichiarare una variabile il cui valore non può essere riassegnato?",
+    correct_answer: "const",
+    incorrect_answers: ["let", "var", "static"],
+  },
+  {
+    question:
+      "Quale metodo permette di aggiungere una classe CSS a un elemento HTML?",
+    correct_answer: "classList.add()",
+    incorrect_answers: [
+      "className.push()",
+      "style.addClass()",
+      "addClassList()",
+    ],
+  },
+  {
+    question:
+      "Quale operatore viene utilizzato per verificare sia il valore che il tipo di una variabile?",
+    correct_answer: "===",
+    incorrect_answers: ["=", "==", "!="],
+  },
+  {
+    question:
+      "Quale metodo permette di eseguire una funzione per ogni elemento di un array?",
+    correct_answer: "forEach()",
+    incorrect_answers: ["push()", "pop()", "join()"],
+  },
+  {
+    question:
+      "Quale attributo HTML permette di specificare un collegamento a una pagina web?",
+    correct_answer: "href",
+    incorrect_answers: ["src", "link", "action"],
+  },
+  {
+    question: "Quale tag HTML viene utilizzato per inserire un'immagine?",
+    correct_answer: "<img>",
+    incorrect_answers: ["<image>", "<picture-img>", "<src>"],
+  },
 ];
 
+// numero di domande da estrarre
+const NUM_QUESTIONS = 10;
+
 /* Costanti del quiz */
-const TOTAL_QUESTIONS = QUESTIONS.length;
+const TOTAL_QUESTIONS = NUM_QUESTIONS;
 const PASS_THRESHOLD = 60; // percentuale minima per "Promosso"
 const FEEDBACK_DELAY = 1500; // ms di attesa dopo risposta prima di avanzare
 const TIMER_DURATION = 20; // secondi per ogni domanda
@@ -181,10 +262,7 @@ const USED_QUESTIONS = [];
 function renderQuiz() {
   MAIN_APP.textContent = "";
 
-  // if (USED_QUESTIONS.includes(QUESTIONS[randomIndex].question)) {
-  //   return renderQuiz();
-  // }
-
+  // ciclo do-while per non far uscire domande già estratte
   do {
     randomIndex = Math.floor(Math.random() * QUESTIONS.length);
   } while (USED_QUESTIONS.includes(QUESTIONS[randomIndex].question));
@@ -208,7 +286,7 @@ function renderQuiz() {
   const newSpan = document.createElement("span");
 
   // -inserisco testo "domanda indicerandomico di questions.length"
-  newSpan.textContent = `Domanda ${USED_QUESTIONS.length} di ${QUESTIONS.length}`;
+  newSpan.textContent = `Domanda ${USED_QUESTIONS.length} di ${NUM_QUESTIONS}`;
 
   // -aggiungo classe quiz-counter
   newSpan.classList.add("quiz-counter");
@@ -304,7 +382,7 @@ function renderQuiz() {
         currentQuestion++;
 
         // se currentQuestion.lenght è < di QUESTIONS.lenght richiamo la funzione renderQuiz() per far scorrere le ulteriori domande
-        if (currentQuestion < QUESTIONS.length) {
+        if (currentQuestion < TOTAL_QUESTIONS) {
           renderQuiz();
         } //con else, ovvero se currentQuestion.lengh è > di QUESTIONS.lenght, cambio il currentScreen in results e richiamo la funzione render ()
         else {
@@ -341,7 +419,7 @@ function startTimer() {
       currentQuestion++;
 
       setTimeout(() => {
-        if (currentQuestion < QUESTIONS.length) {
+        if (currentQuestion < TOTAL_QUESTIONS) {
           renderQuiz();
         } else {
           currentScreen = "results";
@@ -393,22 +471,21 @@ function renderResults() {
   // span per titolo COMPLIMENTI/PECCATO
   const newSpanTitleResult = document.createElement("span");
 
+  // percentuale dello score
+  const percentuage = Math.round((score * 100) / TOTAL_QUESTIONS);
+
   // condizione if per h2
-  if (score >= 6) {
+  if (percentuage >= PASS_THRESHOLD) {
     newTitleResult.textContent = " Hai superato l'esame!";
     newSpanTitleResult.textContent = "Complimenti!";
     newSpanTitleResult.classList.add("passed");
     newTitleResult.classList.add("result-title");
     newDivIcon.classList.add("passed");
+
     //div di coriandoli-box
     const coriandoliBox = document.createElement("div");
     coriandoliBox.classList.add("coriandoli-box");
-    //do classe 'coriandoli-box' a result-header
-    //newDivResults.classList.add('coriandoli-box');
-    //do classe coriandoli box  a newDivIcon
-    //newDivIcon.classList.add('coriandoli-box');
-    //do classe coriandoli box a newDivText
-    // newDivText.classList.add('coriandoli-box');
+
     //for per creare i 10 span
     for (let i = 0; i < 10; i++) {
       const span = document.createElement("span");
@@ -432,8 +509,6 @@ function renderResults() {
   const statDiv = document.createElement("div");
   statDiv.classList.add("stat");
 
-  // div per il cerchio della percentuale
-  const percentuage = (score * 100) / QUESTIONS.length;
   const circleDiv = document.createElement("div");
   circleDiv.classList.add("circle");
   circleDiv.style.setProperty("--perc", `${percentuage}%`);
@@ -460,7 +535,7 @@ function renderResults() {
   // div che contiente la soglia della percentuale
   const statNoteDiv = document.createElement("div");
   statNoteDiv.classList.add("stat-note");
-  statNoteDiv.textContent = `Soglia minima : 60 %`;
+  statNoteDiv.textContent = `Soglia minima : ${PASS_THRESHOLD} %`;
 
   // div a destra dove contiente le statistiche in decimale
   const statRightDiv = document.createElement("div");
@@ -474,7 +549,7 @@ function renderResults() {
   // div per la scritta delle statistiche dentro il cerchio
   const circleRightInDiv = document.createElement("div");
   circleRightInDiv.classList.add("circle-in");
-  circleRightInDiv.textContent = `${score}/${QUESTIONS.length}`;
+  circleRightInDiv.textContent = `${score}/${TOTAL_QUESTIONS}`;
 
   // div per le info delle varie statistiche
   const statRightInfoDiv = document.createElement("div");
@@ -503,7 +578,7 @@ function renderResults() {
   const textBad = document.createElement("span");
   textBad.textContent = "Sbagliate";
   const bBad = document.createElement("b");
-  bBad.textContent = `${QUESTIONS.length - score}`;
+  bBad.textContent = `${TOTAL_QUESTIONS - score}`;
 
   //bottone per restart
   const button = document.createElement("button");

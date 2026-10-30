@@ -489,9 +489,10 @@ font-size: 1.2rem;
 .coriandoli-box{
   position: relative;
 }
+
 /* classi da aggiungere a result-icon e result-text tag  elementi da attaccare a coriandoli box */
 .result-icon,
-.result-text {
+.results-text {
   position: relative;
   z-index: 1;
 }
